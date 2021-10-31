@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/csv"
+	"fmt"
 	"os"
 	"sync"
 )
@@ -9,7 +10,7 @@ import (
 type CsvLine struct {
 	Column1 string
 	Column2 string
-	Column3 string
+	//Column3 string
 }
 
 func GetCsv(name string) []*CsvLine {
@@ -27,16 +28,19 @@ func GetCsv(name string) []*CsvLine {
 		wg.Add(1)
 		go func(i int, line []string) {
 			defer wg.Done()
-			data := CsvLine{
-				Column1: line[0],
-				Column2: line[1],
-				Column3: line[2],
+			if line[2] != "" {
+				data := CsvLine{
+					Column1: line[1],
+					Column2: line[2],
+					//Column3: line[2],
+				}
+				//fmt.Println(data.Column1 + " " + data.Column2)
+				rows[i] = &data
 			}
-			//fmt.Println(data.Column1 + " " + data.Column2 + " " + data.Column3)
-			rows[i] = &data
 		}(i, line)
 	}
 	wg.Wait()
+	fmt.Println(len(rows))
 	return rows
 }
 
