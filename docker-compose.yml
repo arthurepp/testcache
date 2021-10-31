@@ -5,6 +5,7 @@ services:
     container_name: es01
     environment:
       - discovery.type=single-node
+      - discovery.seed_hosts=["localhost", "127.0.0.1"]
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     ulimits:
@@ -20,7 +21,6 @@ services:
       - elastic
   redisearch:
     image: redislabs/redisearch:latest
-    restart: always
     ports:
       - "6382:6379"
 
